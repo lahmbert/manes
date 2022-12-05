@@ -1,12 +1,15 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
-import { createBookDto } from './dto/create-book.dto';
+import { CreateBookDto } from './dto/create-book.dto';
+import { GetBooksDto } from './dto/get-books.dto';
+import { UpdateBookDto } from './dto/update-book.dto';
 
 @Injectable()
 export class BooksService {
     private books: any[]=[];
 
-    getBooks(title: string, author: string, category:string): any[] {
+    getBooks(getBooksDto:GetBooksDto): any[] {
+        const {title, author, category, year} = getBooksDto;
         const books = this.books.filter((book)=>{
             let isMatch = true;
             if (title && book.title != title) {
@@ -16,6 +19,9 @@ export class BooksService {
                 isMatch = false;
             }
             if (category && book.category != category) {
+                isMatch = false;
+            }
+            if (year && book.year != year) {
                 isMatch = false;
             }
             return isMatch;
@@ -28,8 +34,8 @@ export class BooksService {
         return this.books[bookIdx];
     }
 
-    createBook(createBookDto: createBookDto) {
-        const {title, author, category, year} = createBookDto;
+    createBook(CreateBookDto: CreateBookDto) {
+        const {title, author, category, year} = CreateBookDto;
         this.books.push({
             id: uuidv4(),
             title,
@@ -39,11 +45,13 @@ export class BooksService {
         });
     }
 
-    updateBook(id: string, title: string, author: string, category:string) {
+    updateBook(id: string, UpdateBookDto: UpdateBookDto) {
+        const {title, author, category, year} = UpdateBookDto;
         const bookIdx = this.findBookById(id);
         this.books[bookIdx].title = title;
         this.books[bookIdx].author = author;
         this.books[bookIdx].category = category;
+        this.books[bookIdx].year = year;
     }
 
     findBookById(id:string) {

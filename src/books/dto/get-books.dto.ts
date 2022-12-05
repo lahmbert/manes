@@ -1,4 +1,4 @@
-export class CreateBookDto {
+export class GetBooksDto {
     title: string;
 
     author: string;

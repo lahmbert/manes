@@ -1,21 +1,16 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
-import { query } from 'express';
-import { title } from 'process';
 import { BooksService } from './books.service';
-import { createBookDto } from './dto/create-book.dto';
+import { CreateBookDto } from './dto/create-book.dto';
+import { GetBooksDto } from './dto/get-books.dto';
+import { UpdateBookDto } from './dto/update-book.dto';
 
 @Controller('books')
 export class BooksController {
     constructor(private booksService : BooksService) {}
 
     @Get()
-   getBooks(
-    @Query('title') title:string,
-    @Query('author') author:string,
-    @Query('category') category:string,
-   
-   ) {
-    return this.booksService.getBooks(title, author, category);
+   getBooks(@Query() payload:GetBooksDto) {
+    return this.booksService.getBooks(payload);
    }
 
    @Get('/:id')
@@ -24,18 +19,16 @@ export class BooksController {
    }
 
    @Post()
-   createBook(@Body() payload:createBookDto) {
+   createBook(@Body() payload:CreateBookDto) {
     return this.booksService.createBook(payload);
    }
 
    @Put('/:id')
    updateBook(
     @Param('id') id:string,
-    @Body('title') title:string, 
-    @Body('author') author:string, 
-    @Body('category') category:string
+    @Body() payload:UpdateBookDto
     ) {
-        return this.booksService.updateBook(id, title, author, category);
+        return this.booksService.updateBook(id, payload);
     }
 
     @Delete('/:id')
