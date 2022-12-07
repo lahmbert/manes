@@ -1,0 +1,7 @@
+npm i -g @nestjs/cli
+
+npm i uuid
+
+npm i --save class-validator class-transformer
+
+npm install --save @nestjs/typeorm typeorm mysql

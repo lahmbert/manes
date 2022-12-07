@@ -1,24 +1,74 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { v4 as uuidv4 } from 'uuid';
+import { CreateBookDto } from './dto/create-book.dto';
+import { UpdateBookDto } from './dto/update-book.dto';
 
 @Injectable()
 export class BooksService {
     private books: any[] = [];
 
-    getAllBooks(): any[] {
-        return this.books;
-    }
-
-    createBook(
+    getBooks(
         title: string,
         author: string,
         category: string,
-        year: string
-    ) {
+        year: number
+    ): any[] {
+        const books = this.books.filter((book) => {
+            if (title && book.title != title) {
+                return false;
+            }
+            if (author && book.author != author) {
+                return false;
+            }
+            if (category && book.category != category) {
+                return false;
+            }
+            if (year && book.year != year) {
+                return false;
+            }
+            return true;
+        });
+        return books;
+    }
+
+    getBook(id: string) {
+        const bookIdx = this.findBookById(id);
+        return this.books[bookIdx];
+    }
+
+    createBook(createBookDto: CreateBookDto) {
+        const {title, category, author, year} = createBookDto;
         this.books.push({
+            id: uuidv4(),
             title,
             author,
             category,
             year,
         });
+    }
+
+    updateBook(
+        id: string,
+        updateBookDto: UpdateBookDto
+    ) {
+        const {title, category, author, year} = updateBookDto;
+        const bookIdx = this.findBookById(id);
+        this.books[bookIdx].title = title;
+        this.books[bookIdx].author = author;
+        this.books[bookIdx].category = category;
+        this.books[bookIdx].year = year;
+    }
+
+    findBookById(id: string) {
+        const bookIdx = this.books.findIndex((book) => book.id === id);
+        if (bookIdx === -1) {
+            throw new NotFoundException(`Book with id: ${id} is not found`);
+        }
+        return bookIdx;
+    }
+
+    deleteBook(id: string) {
+        const bookIdx = this.findBookById(id);
+        this.books.splice(bookIdx, 1);
     }
 }
