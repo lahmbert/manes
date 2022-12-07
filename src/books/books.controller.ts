@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/
 import { title } from 'process';
 import { BooksService } from './books.service';
 import { CreateBookDto } from './dto/create-book.dto';
+import { FilterBookDto } from './dto/filter-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 
 @Controller('books')
@@ -10,12 +11,8 @@ export class BooksController {
 
     @Get()
     getBooks(
-        @Query('title') title: string,
-        @Query('author') author: string,
-        @Query('category') category: string,
-        @Query('year') year: string
-    ) {
-        return this.booksService.getBooks(title, author, category, year);
+        @Query() filter: FilterBookDto) {
+        return this.booksService.getBooks(filter);
     }
 
     @Get('/:id')
@@ -31,7 +28,7 @@ export class BooksController {
     @Put('/:id')
     updateBook(
         @Param('id') id: string,
-        @Body() payload:UpdateBookDto
+        @Body() payload: UpdateBookDto
     ) {
         return this.booksService.updateBook(id, payload);
     }

@@ -1,18 +1,15 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
 import { CreateBookDto } from './dto/create-book.dto';
+import { FilterBookDto } from './dto/filter-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 
 @Injectable()
 export class BooksService {
     private books: any[] = [];
 
-    getBooks(
-        title: string,
-        author: string,
-        category: string,
-        year: string
-    ): any[] {
+    getBooks(filter:FilterBookDto): any[] {
+        const {title, category, author, min_year, max_year} = filter;
         const books = this.books.filter((book) => {
             if (title && book.title != title) {
                 return false;
@@ -23,7 +20,10 @@ export class BooksService {
             if (category && book.category != category) {
                 return false;
             }
-            if (year && book.year != year) {
+            if (min_year && book.year < min_year) {
+                return false;
+            }
+            if (max_year && book.year > max_year) {
                 return false;
             }
             return true;
