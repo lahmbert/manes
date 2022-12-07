@@ -11,7 +11,7 @@ export class BooksService {
         title: string,
         author: string,
         category: string,
-        year: number
+        year: string
     ): any[] {
         const books = this.books.filter((book) => {
             if (title && book.title != title) {

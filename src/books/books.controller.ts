@@ -13,7 +13,7 @@ export class BooksController {
         @Query('title') title: string,
         @Query('author') author: string,
         @Query('category') category: string,
-        @Query('year') year: number
+        @Query('year') year: string
     ) {
         return this.booksService.getBooks(title, author, category, year);
     }
