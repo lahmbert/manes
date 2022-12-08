@@ -10,31 +10,30 @@ export class BooksController {
     constructor(private booksService: BooksService) { }
 
     @Get()
-    getBooks(
-        @Query() filter: FilterBookDto) {
+    getBooks(@Query() filter: FilterBookDto) {
         return this.booksService.getBooks(filter);
     }
 
-    @Get('/:id')
-    getBook(@Param('id') id: string) {
-        return this.booksService.getBook(id);
-    }
+    // @Get('/:id')
+    // getBook(@Param('id') id: string) {
+    //     return this.booksService.getBook(id);
+    // }
 
-    @Post()
-    createBook(@Body() payload: CreateBookDto) {
-        return this.booksService.createBook(payload);
-    }
+    // @Post()
+    // createBook(@Body() payload: CreateBookDto) {
+    //     return this.booksService.createBook(payload);
+    // }
 
-    @Put('/:id')
-    updateBook(
-        @Param('id') id: string,
-        @Body() payload: UpdateBookDto
-    ) {
-        return this.booksService.updateBook(id, payload);
-    }
+    // @Put('/:id')
+    // updateBook(
+    //     @Param('id') id: string,
+    //     @Body() payload: UpdateBookDto
+    // ) {
+    //     return this.booksService.updateBook(id, payload);
+    // }
 
-    @Delete('/:id')
-    deleteBook(@Param('id') id: string) {
-        return this.booksService.deleteBook(id);
-    }
+    // @Delete('/:id')
+    // deleteBook(@Param('id') id: string) {
+    //     return this.booksService.deleteBook(id);
+    // }
 }
